@@ -6,6 +6,7 @@ const Cases = () => {
     const [caseName, setCaseName] = useState("");
     const [caseDescription, setCaseDescription] = useState("");
     const [dateReported, setDateReported] = useState("");
+    const [userId, setUserId] = useState(""); // New state for userId
     const [cases, setCases] = useState([]); // State to store cases
 
     // Fetch all cases from the backend when the component mounts
@@ -28,11 +29,13 @@ const Cases = () => {
                 caseName,
                 caseDescription,
                 dateReported,
+                userId,  // Send the userId along with the case data
             });
             alert("Case added successfully");
             setCaseName("");
             setCaseDescription("");
             setDateReported("");
+            setUserId("");  // Reset the userId field
             // Re-fetch cases after adding a new one
             const response = await axios.get("http://localhost:3001/cases");
             setCases(response.data);
@@ -71,6 +74,15 @@ const Cases = () => {
                         required
                     />
                 </div>
+                <div className="form-group">
+                    <label>User ID:</label>
+                    <input
+                        type="text"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                        required
+                    />
+                </div>
                 <button type="submit" className="submit-btn">Add Case</button>
             </form>
 
@@ -81,6 +93,7 @@ const Cases = () => {
                         <th>Case Name</th>
                         <th>Case Description</th>
                         <th>Date Reported</th>
+                        <th>User ID</th> {/* Add column for User ID */}
                     </tr>
                 </thead>
                 <tbody>
@@ -89,6 +102,7 @@ const Cases = () => {
                             <td>{caseItem.caseName}</td>
                             <td>{caseItem.caseDescription}</td>
                             <td>{caseItem.dateReported}</td>
+                            <td>{caseItem.userId}</td> {/* Display the User ID */}
                         </tr>
                     ))}
                 </tbody>
